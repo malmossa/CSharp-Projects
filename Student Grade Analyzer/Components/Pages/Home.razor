@@ -1,0 +1,110 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<div class="text-center mb-4">
+    <h1 class="display-5 fw-bold">
+        Student Grade
+    </h1>
+
+    <p class="text-secondary">
+        Enter up to five grades and get a complete analysis of your performance.
+    </p>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="mb-3">
+            <i class="bi bi-pencil-fill text-primary me-2"></i>
+            Student Information
+        </h5>
+
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label for="studentName" class="form-label">
+                            Student Name
+                        </label>
+
+                        <input id="studentName"
+                               type="text"
+                               class="form-control"
+                               placeholder="Enter student name..." />
+                    </div>
+
+                    <div class="col">
+                        <label for="grade1" class="form-label">
+                            Grade 1
+                        </label>
+
+                        <input id="grade1"
+                               type="number"
+                               class="form-control"
+                               placeholder="0-100" />
+                    </div>
+
+                    <div class="col">
+                        <label for="grade2" class="form-label">
+                            Grade 2
+                        </label>
+
+                        <input id="grade2"
+                               type="number"
+                               class="form-control"
+                               placeholder="0-100" />
+                    </div>
+
+                    <div class="col">
+                        <label for="grade3" class="form-label">
+                            Grade 3
+                        </label>
+
+                        <input id="grade3"
+                               type="number"
+                               class="form-control"
+                               placeholder="0-100" />
+                    </div>
+
+                    <div class="col">
+                        <label for="grade4" class="form-label">
+                            Grade 4
+                        </label>
+
+                        <input id="grade4"
+                               type="number"
+                               class="form-control"
+                               placeholder="0-100" />
+                    </div>
+
+                    <div class="col">
+                        <label for="grade5" class="form-label">
+                            Grade 5
+                        </label>
+
+                        <input id="grade5"
+                               type="number"
+                               class="form-control"
+                               placeholder="0-100" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="alert alert-primary mb-0">
+                    <h6 class="mb-3">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        Instructions
+                    </h6>
+
+                    <ul class="mb-0">
+                        <li>Enter the student's name.</li>
+                        <li>Enter five grades from 0 to 100.</li>
+                        <li>Click Analyze Grades.</li>
+                        <li>View the results below.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
