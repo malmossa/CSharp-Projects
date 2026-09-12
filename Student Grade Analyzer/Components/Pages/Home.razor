@@ -1,14 +1,15 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
 <div class="text-center mb-4">
-    <h1 class="display-5 fw-bold">
+    <h1 class="display-5">
         Student Grade
     </h1>
 
     <p class="text-secondary">
-        Enter up to five grades and get a complete analysis of your performance.
+        Enter five grades and get a complete analysis of your performance.
     </p>
 </div>
 
@@ -30,7 +31,8 @@
                         <input id="studentName"
                                type="text"
                                class="form-control"
-                               placeholder="Enter student name..." />
+                               placeholder="Enter student name..."
+                               @bind="studentName" />
                     </div>
 
                     <div class="col">
@@ -41,7 +43,8 @@
                         <input id="grade1"
                                type="number"
                                class="form-control"
-                               placeholder="0-100" />
+                               placeholder="0-100"
+                               @bind="grade1" />
                     </div>
 
                     <div class="col">
@@ -52,7 +55,8 @@
                         <input id="grade2"
                                type="number"
                                class="form-control"
-                               placeholder="0-100" />
+                               placeholder="0-100"
+                               @bind="grade2" />
                     </div>
 
                     <div class="col">
@@ -63,7 +67,8 @@
                         <input id="grade3"
                                type="number"
                                class="form-control"
-                               placeholder="0-100" />
+                               placeholder="0-100"
+                               @bind="grade3" />
                     </div>
 
                     <div class="col">
@@ -74,7 +79,8 @@
                         <input id="grade4"
                                type="number"
                                class="form-control"
-                               placeholder="0-100" />
+                               placeholder="0-100"
+                               @bind="grade4" />
                     </div>
 
                     <div class="col">
@@ -85,9 +91,25 @@
                         <input id="grade5"
                                type="number"
                                class="form-control"
-                               placeholder="0-100" />
+                               placeholder="0-100"
+                               @bind="grade5" />
                     </div>
                 </div>
+
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-primary px-5" @onclick="AnalyzeGrades">
+                        <i class="bi bi-bar-chart-fill me-2"></i>
+                        Analyze Grades
+                    </button>
+                </div>
+                @if (errorMessage != string.Empty)
+                {
+                    <div class="alert alert-danger mt-3 mb-0">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        @errorMessage
+                    </div>
+                }
+
             </div>
 
             <div class="col-md-4">
@@ -105,6 +127,352 @@
                     </ul>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+<div class="card shadow-sm mt-4">
+    <div class="card-body">
+        <h5 class="mb-3">
+            <i class="bi bi-bar-chart-fill text-primary me-2"></i>
+            Results
+        </h5>
+
+        <p class="text-secondary mb-4">
+            Your grade analysis will appear here.
+        </p>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="alert alert-primary mb-0">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-calculator-fill fs-4 me-3"></i>
+
+                        <div>
+                            <div class="small">Average</div>
+                            @if (hasAnalyzed)
+                            {
+                                <div class="fw-bold fs-5">@average</div>
+                            }
+                            else
+                            {
+                                <div class="fw-bold fs-5">--</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="alert alert-success mb-0">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-arrow-up-circle-fill fs-4 me-3"></i>
+
+                        <div>
+                            <div class="small">Highest Grade</div>
+                            @if (hasAnalyzed)
+                            {
+                                <div class="fw-bold fs-5">@highestGrade</div>
+                            }
+                            else
+                            {
+                                <div class="fw-bold fs-5">--</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="alert alert-danger mb-0">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-arrow-down-circle-fill fs-4 me-3"></i>
+
+                        <div>
+                            <div class="small">Lowest Grade</div>
+                            @if (hasAnalyzed)
+                            {
+                                <div class="fw-bold fs-5">@lowestGrade</div>
+                            }
+                            else
+                            {
+                                <div class="fw-bold fs-5">--</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="alert alert-secondary mb-0">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-mortarboard-fill fs-4 me-3"></i>
+
+                        <div>
+                            <div class="small">Letter Grade</div>
+                            @if (hasAnalyzed)
+                            {
+                                <div class="fw-bold fs-5">@letterGrade</div>
+                            }
+                            else
+                            {
+                                <div class="fw-bold fs-5">--</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="alert alert-success mb-0">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+
+                        <div>
+                            <div class="small">Passing Grades</div>
+                            @if (hasAnalyzed)
+                            {
+                                <div class="fw-bold fs-5">@passingGrades</div>
+                            }
+                            else
+                            {
+                                <div class="fw-bold fs-5">--</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="alert alert-danger mb-0">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-x-circle-fill fs-4 me-3"></i>
+
+                        <div>
+                            <div class="small">Failing Grades</div>
+                            @if (hasAnalyzed)
+                            {
+                                <div class="fw-bold fs-5">@failingGrades</div>
+                            }
+                            else
+                            {
+                                <div class="fw-bold fs-5">--</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="alert alert-warning mb-0">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-trophy-fill fs-4 me-3"></i>
+
+                        <div>
+                            <div class="small">Status</div>
+                            @if (hasAnalyzed)
+                            {
+                                if (passed)
+                                {
+                                    <div class="fw-bold fs-5 text-success">PASS</div>
+                                }
+                                else
+                                {
+                                    <div class="fw-bold fs-5 text-danger">FAIL</div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="fw-bold fs-5">--</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-light border mt-3 mb-0 text-center">
+            <i class="bi bi-info-circle me-2"></i>
+            Enter your grades and click <strong>Analyze Grades</strong> to see the results.
+        </div>
+    </div>
+</div>
+
+
+
+
+@code {
+
+    private string errorMessage = string.Empty;
+    private string studentName = string.Empty;
+
+
+    private double grade1;
+    private double grade2;
+    private double grade3;
+    private double grade4;
+    private double grade5;
+
+    private double average;
+    private char letterGrade;
+    private double highestGrade;
+    private double lowestGrade;
+    private int passingGrades;
+    private int failingGrades;
+    private bool passed;
+
+    private bool hasAnalyzed;
+
+    private void AnalyzeGrades()
+    {
+        errorMessage = string.Empty;
+
+        if (grade1 < 0 || grade1 > 100 ||
+            grade2 < 0 || grade2 > 100 ||
+            grade3 < 0 || grade3 > 100 ||
+            grade4 < 0 || grade4 > 100 ||
+            grade5 < 0 || grade5 > 100)
+        {
+            errorMessage = "Please enter grades between 0 and 100.";
+            return;
+        }
+
+        average = (grade1 + grade2 + grade3 + grade4 + grade5) / 5;
+
+        if (average >= 60)
+        {
+            passed = true;
+        }
+        else
+        {
+            passed = false;
+        }
+
+
+        if (average >= 90)
+        {
+            letterGrade = 'A';
+        }
+        else if (average >= 80)
+        {
+            letterGrade = 'B';
+        }
+        else if (average >= 70)
+        {
+            letterGrade = 'C';
+        }
+        else if (average >= 60)
+        {
+            letterGrade = 'D';
+        }
+        else
+        {
+            letterGrade = 'F';
+        }
+
+
+        highestGrade = grade1;
+
+        if (grade2 > highestGrade)
+        {
+            highestGrade = grade2;
+        }
+
+        if (grade3 > highestGrade)
+        {
+            highestGrade = grade3;
+        }
+
+        if (grade4 > highestGrade)
+        {
+            highestGrade = grade4;
+        }
+
+        if (grade5 > highestGrade)
+        {
+            highestGrade = grade5;
+        }
+
+
+        lowestGrade = grade1;
+
+        if (grade2 < lowestGrade)
+        {
+            lowestGrade = grade2;
+        }
+
+        if (grade3 < lowestGrade)
+        {
+            lowestGrade = grade3;
+        }
+
+        if (grade4 < lowestGrade)
+        {
+            lowestGrade = grade4;
+        }
+
+        if (grade5 < lowestGrade)
+        {
+            lowestGrade = grade5;
+        }
+
+
+        passingGrades = 0;
+
+        if (grade1 >= 60)
+        {
+            passingGrades++;
+        }
+
+        if (grade2 >= 60)
+        {
+            passingGrades++;
+        }
+
+        if (grade3 >= 60)
+        {
+            passingGrades++;
+        }
+
+        if (grade4 >= 60)
+        {
+            passingGrades++;
+        }
+
+        if (grade5 >= 60)
+        {
+            passingGrades++;
+        }
+
+
+        failingGrades = 0;
+
+        if (grade1 < 60)
+        {
+            failingGrades++;
+        }
+
+        if (grade2 < 60)
+        {
+            failingGrades++;
+        }
+
+        if (grade3 < 60)
+        {
+            failingGrades++;
+        }
+
+        if (grade4 < 60)
+        {
+            failingGrades++;
+        }
+
+        if (grade5 < 60)
+        {
+            failingGrades++;
+        }
+
+        hasAnalyzed = true;
+    }
+}
